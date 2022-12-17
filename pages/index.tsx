@@ -1,14 +1,20 @@
+import Box from '@mui/material/Box'
+import Modal from '@mui/material/Modal'
 import Head from 'next/head'
 import { useEffect, useRef, useState } from 'react'
+import { BsGear } from 'react-icons/bs'
+import { AiOutlineClose } from "react-icons/ai";
+
 
 export default function Home() {
-
-  const COUNTDOWN_POMODORO_1_IN_SECONDS = 25 * 60
-  const COUNTDOWN_POMODORO_2_IN_SECONDS = 5 * 60
-  const COUNTDOWN_POMODORO_3_IN_SECONDS = 15 * 60
-
-  const [secondsAmount, setSecondsAmont] = useState(COUNTDOWN_POMODORO_1_IN_SECONDS);
+  
+  const [Pomodoro, setPomodoro] = useState(25 * 60)
+  const [ShortBreak, setShortBreak] = useState(5 * 60)
+  const [LongBreak, setLongBreak] = useState(15 * 60)
+  const [Theme, setTheme] = useState(1);
+  const [secondsAmount, setSecondsAmont] = useState(25 * 60);
   const [IsCounting, setIsCounting] = useState(false);
+  const [IsModalOpen, setIsModalOpen] = useState(false);
   const IntervalRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
@@ -31,17 +37,24 @@ export default function Home() {
   function ChangeCountdown(ref: number) {
     setIsCounting(false);
     clearTimeout(IntervalRef.current);
-    setSecondsAmont(ref);
-  }
-
-  function ResetCounter() {
-    setIsCounting(false);
-    setSecondsAmont(COUNTDOWN_POMODORO_1_IN_SECONDS);
+    setSecondsAmont(ref)
   }
 
   const minutes = Math.floor(secondsAmount / 60);
   const seconds = secondsAmount % 60;
 
+  function selecionacor(){
+    if(Theme ===1){
+      return 'bg-[#B87E91]'
+    }
+    if(Theme ===2){
+      return 'bg-[#538059]'
+    }
+    if(Theme ===3){
+      return 'bg-[#264674]'
+    }
+  }
+  
   return (
     <>
       <Head>
@@ -50,14 +63,20 @@ export default function Home() {
         <link rel="icon" href="/icon.png" />
       </Head>
 
-      <main className='flex flex-col justify-center items-center min-h-screen bg-[#B87E91]'>
-        
-        <section className='bg-[#000B] py-5 sm:py-10 px-2 sm:px-10 border-2 rounded-lg border-transparent opacity-70 '>
+      <main className={`flex flex-col justify-center items-center min-h-screen ${selecionacor()}`}>
+        <section className='bg-[#000B] py-5 sm:py-10 px-2 sm:px-10 border-2 rounded-lg border-transparent opacity-80 text-white '>
 
-          <div className='flex text-center items-center gap-2 sm:gap-6 py-2 border-b-2 border-[#B87E91]'>
-            <button className='text-lg sm:text-2xl focus:bg-black focus:opacity-90 px-2 py-2 rounded-lg border-transparent' onClick={() => ChangeCountdown(COUNTDOWN_POMODORO_1_IN_SECONDS)}>Pomodoro</button>
-            <button className='text-lg sm:text-2xl focus:bg-black focus:opacity-90 px-2 py-2 rounded-lg border-transparent' onClick={() => ChangeCountdown(COUNTDOWN_POMODORO_2_IN_SECONDS)}>Short Break</button>
-            <button className='text-lg sm:text-2xl focus:bg-black focus:opacity-90 px-2 py-2 rounded-lg border-transparent' onClick={() => ChangeCountdown(COUNTDOWN_POMODORO_3_IN_SECONDS)}>Long Break</button>
+          <div className='flex text-center items-center gap-2 sm:gap-6 py-2 border-b-2 '>
+            <button 
+            className='text-lg sm:text-2xl focus:bg-black focus:opacity-90 px-2 py-2 rounded-lg border-transparent' 
+            onClick={() => ChangeCountdown(Pomodoro )}>Pomodoro</button>
+            <button 
+            className='text-lg sm:text-2xl focus:bg-black focus:opacity-90 px-2 py-2 rounded-lg border-transparent' 
+            onClick={() => ChangeCountdown(ShortBreak)}>Short Break</button>
+            <button 
+            className='text-lg sm:text-2xl focus:bg-black focus:opacity-90 px-2 py-2 rounded-lg border-transparent' 
+            onClick={() => ChangeCountdown(LongBreak)}>Long Break</button>
+            <BsGear className='gear' onClick={() => setIsModalOpen(true)} />
           </div>
 
           <div className='py-8 flex justify-center'>
@@ -68,12 +87,67 @@ export default function Home() {
 
           <div className='flex gap-16 justify-center'>
             <button className='text-4xl' onClick={() => setIsCounting(!IsCounting)}> {IsCounting ? "Pause" : "Start"}</button>
-            <button className='text-4xl' onClick={() => ResetCounter()}> Reset</button>
           </div>
-
         </section>
+
+        <Modal
+          open={IsModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box className='modal'>
+            <div className='flex justify-between px-5 py-5 border-b-2 items-center'>
+              <h2 className='text-2xl'>Settings</h2>
+              <AiOutlineClose className='text-2xl cursor-pointer' onClick={() => setIsModalOpen(false)} />
+            </div>
+
+            <div className='border-b-2'>
+              <h2 className='px-5 py-3 text-xl '>Time (minutes)</h2>
+                <div className='flex gap-8 px-5 pb-5'>
+                  <div>
+                    <p>Pomodoro</p>
+                    <input 
+                    type="number" 
+                    className='w-24 h-8 bg-[#D5DDE0] px-2 rounded-sm' 
+                    onChange={e => setPomodoro(Number(e.target.value) * 60)}
+                    value={Pomodoro/60}
+                     />
+                  </div>
+                  <div>
+                    <p>Short Break</p>
+                    <input 
+                    type="number" 
+                    className='w-24 h-8 bg-[#D5DDE0] px-2 rounded-sm' 
+                    onChange={e => setShortBreak(Number(e.target.value) * 60)}
+                    value={ShortBreak/60} 
+                    />
+                  </div>
+                  <div>
+                    <p>Long Break</p>
+                    <input 
+                    type="number" 
+                    className='w-24 h-8 bg-[#D5DDE0] px-2 rounded-sm' 
+                    onChange={e => setLongBreak(Number(e.target.value) * 60)}
+                    value={LongBreak/60}  
+                    />
+                  </div>
+                </div>         
+            </div>
+
+            <div className='flex justify-between px-5 py-5  items-center'>
+              <h2 className='text-xl'>Color Themes</h2>
+              <div className='flex gap-5'>
+                <button className='w-7 h-7 rounded-lg bg-[#B87E91]' onClick={() => setTheme(1)}></button>
+                <button className='w-7 h-7 rounded-lg bg-[#538059]' onClick={() => setTheme(2)}></button>
+                <button className='w-7 h-7 rounded-lg bg-[#264674]' onClick={() => setTheme(3)}></button>
+              </div>
+            </div>
+          </Box>
+        </Modal>
 
       </main>
     </>
   )
 }
+

@@ -2,12 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-  }
+.gear{
+font-size: 1.5rem;
+cursor:pointer;
 }
+
+.gear:hover {
+  animation: rotating 2s infinite linear;
+}
+
+.modal{
+  @apply absolute top-2/4 left-2/4 w-[400px] translate-x-[-50%] translate-y-[-50%] bg-[#FCFBF4] border-2 rounded-lg border-transparent
+}
+
+@keyframes rotating {
+  to {transform: rotateZ(360deg);}
+}
+
