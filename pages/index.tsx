@@ -7,7 +7,7 @@ import { AiOutlineClose } from "react-icons/ai";
 
 
 export default function Home() {
-  
+
   const [Pomodoro, setPomodoro] = useState(25 * 60)
   const [ShortBreak, setShortBreak] = useState(5 * 60)
   const [LongBreak, setLongBreak] = useState(15 * 60)
@@ -43,18 +43,23 @@ export default function Home() {
   const minutes = Math.floor(secondsAmount / 60);
   const seconds = secondsAmount % 60;
 
-  function selecionacor(){
-    if(Theme ===1){
+  function selecionacor() {
+    if (Theme === 1) {
       return 'bg-[#B87E91]'
     }
-    if(Theme ===2){
+    if (Theme === 2) {
       return 'bg-[#538059]'
     }
-    if(Theme ===3){
+    if (Theme === 3) {
       return 'bg-[#264674]'
     }
   }
-  
+
+  function HandleModal() {
+    setIsModalOpen(false)
+    ChangeCountdown(Pomodoro)
+  }
+
   return (
     <>
       <Head>
@@ -67,15 +72,15 @@ export default function Home() {
         <section className='bg-[#000B] py-5 sm:py-10 px-2 sm:px-10 border-2 rounded-lg border-transparent opacity-80 text-white '>
 
           <div className='flex text-center items-center gap-2 sm:gap-6 py-2 border-b-2 '>
-            <button 
-            className='text-lg sm:text-2xl focus:bg-black focus:opacity-90 px-2 py-2 rounded-lg border-transparent' 
-            onClick={() => ChangeCountdown(Pomodoro )}>Pomodoro</button>
-            <button 
-            className='text-lg sm:text-2xl focus:bg-black focus:opacity-90 px-2 py-2 rounded-lg border-transparent' 
-            onClick={() => ChangeCountdown(ShortBreak)}>Short Break</button>
-            <button 
-            className='text-lg sm:text-2xl focus:bg-black focus:opacity-90 px-2 py-2 rounded-lg border-transparent' 
-            onClick={() => ChangeCountdown(LongBreak)}>Long Break</button>
+            <button
+              className='text-lg sm:text-2xl focus:bg-black focus:opacity-90 px-2 py-2 rounded-lg border-transparent'
+              onClick={() => ChangeCountdown(Pomodoro)}>Pomodoro</button>
+            <button
+              className='text-lg sm:text-2xl focus:bg-black focus:opacity-90 px-2 py-2 rounded-lg border-transparent'
+              onClick={() => ChangeCountdown(ShortBreak)}>Short Break</button>
+            <button
+              className='text-lg sm:text-2xl focus:bg-black focus:opacity-90 px-2 py-2 rounded-lg border-transparent'
+              onClick={() => ChangeCountdown(LongBreak)}>Long Break</button>
             <BsGear className='gear' onClick={() => setIsModalOpen(true)} />
           </div>
 
@@ -86,13 +91,15 @@ export default function Home() {
           </div>
 
           <div className='flex gap-16 justify-center'>
-            <button className='text-4xl' onClick={() => setIsCounting(!IsCounting)}> {IsCounting ? "Pause" : "Start"}</button>
+            <button className='text-4xl hover:scale-105 ease-in-out duration-300' 
+            onClick={() => setIsCounting(!IsCounting)}> {IsCounting ? "Pause" : "Start"}
+            </button>
           </div>
         </section>
 
         <Modal
           open={IsModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={HandleModal}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -101,40 +108,39 @@ export default function Home() {
               <h2 className='text-2xl'>Settings</h2>
               <AiOutlineClose className='text-2xl cursor-pointer' onClick={() => setIsModalOpen(false)} />
             </div>
-
             <div className='border-b-2'>
               <h2 className='px-5 py-3 text-xl '>Time (minutes)</h2>
-                <div className='flex gap-8 px-5 pb-5'>
-                  <div>
-                    <p>Pomodoro</p>
-                    <input 
-                    type="number" 
-                    className='w-24 h-8 bg-[#D5DDE0] px-2 rounded-sm' 
+              <div className='flex gap-8 px-5 pb-5'>
+                <div>
+                  <p>Pomodoro</p>
+                  <input
+                    type="number"
+                    className='w-24 h-8 bg-[#D5DDE0] px-2 rounded-sm'
                     onChange={e => setPomodoro(Number(e.target.value) * 60)}
-                    value={Pomodoro/60}
-                     />
-                  </div>
-                  <div>
-                    <p>Short Break</p>
-                    <input 
-                    type="number" 
-                    className='w-24 h-8 bg-[#D5DDE0] px-2 rounded-sm' 
+                    value={Pomodoro / 60}
+                  />
+                </div>
+                <div>
+                  <p>Short Break</p>
+                  <input
+                    type="number"
+                    className='w-24 h-8 bg-[#D5DDE0] px-2 rounded-sm'
                     onChange={e => setShortBreak(Number(e.target.value) * 60)}
-                    value={ShortBreak/60} 
-                    />
-                  </div>
-                  <div>
-                    <p>Long Break</p>
-                    <input 
-                    type="number" 
-                    className='w-24 h-8 bg-[#D5DDE0] px-2 rounded-sm' 
+                    value={ShortBreak / 60}
+                  />
+                </div>
+                <div>
+                  <p>Long Break</p>
+                  <input
+                    type="number"
+                    className='w-24 h-8 bg-[#D5DDE0] px-2 rounded-sm'
                     onChange={e => setLongBreak(Number(e.target.value) * 60)}
-                    value={LongBreak/60}  
-                    />
-                  </div>
-                </div>         
+                    value={LongBreak / 60}
+                  />
+                </div>
+              </div>
+              <h2 className='px-5 py-2 italic'>When you close modal, you will always be redirect to a pomodoro timer</h2>
             </div>
-
             <div className='flex justify-between px-5 py-5  items-center'>
               <h2 className='text-xl'>Color Themes</h2>
               <div className='flex gap-5'>
