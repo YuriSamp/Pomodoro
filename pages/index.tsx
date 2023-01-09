@@ -91,8 +91,8 @@ export default function Home() {
           </div>
 
           <div className='flex gap-16 justify-center'>
-            <button className='text-4xl hover:scale-105 ease-in-out duration-300' 
-            onClick={() => setIsCounting(!IsCounting)}> {IsCounting ? "Pause" : "Start"}
+            <button className='text-4xl hover:scale-105 ease-in-out duration-300'
+              onClick={() => setIsCounting(!IsCounting)}> {IsCounting ? "Pause" : "Start"}
             </button>
           </div>
         </section>
@@ -139,7 +139,7 @@ export default function Home() {
                   />
                 </div>
               </div>
-              <h2 className='px-5 py-2 italic'>When you close modal, you will always be redirect to a pomodoro timer</h2>
+              <h2 className='px-5 py-2 italic'>When you close the modal, you will always be redirect to a pomodoro timer</h2>
             </div>
             <div className='flex justify-between px-5 py-5  items-center'>
               <h2 className='text-xl'>Color Themes</h2>
